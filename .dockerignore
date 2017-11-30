@@ -1,0 +1,12 @@
+# package directories
+node_modules
+jspm_packages
+package-lock.json
+dynamodb_data
+
+# Serverless directories
+.serverless
+
+# Tests
+test
+*.spec.js
