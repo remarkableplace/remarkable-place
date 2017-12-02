@@ -1,0 +1,12 @@
+html(lang="en")
+  include ../includes/head.pug
+  body
+    include ../includes/header.pug
+
+    main(role="main" class="container")
+      div(class="row")
+        div(class="col-sm-8 blog-main")
+          h1(class="blog-post-title")= page.title
+          div !{page.content}
+
+    include ../includes/footer.pug

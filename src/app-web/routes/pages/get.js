@@ -1,14 +1,12 @@
-const MarkdownIt = require('markdown-it');
+const Markdown = require('../../../models/markdown');
 const Page = require('../../../models/page');
-
-const md = new MarkdownIt();
 
 function get(req, res, next) {
   Page.get()
     .then(pages => {
       const renderedPages = pages.map(page =>
         Object.assign({}, page, {
-          content: md.render(page.content || '')
+          content: Markdown.render(page.content || '')
         })
       );
 

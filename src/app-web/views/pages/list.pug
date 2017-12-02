@@ -1,37 +1,7 @@
 html(lang="en")
-  head
-    meta(charset="utf-8")
-    meta(
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    )
-    title Remarkable Place
-    link(
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-      crossorigin="anonymous"
-    )
+  include ../includes/head.pug
   body
-    header
-      div(class="blog-header")
-        div(class="container")
-          h1(class="blog-title") remarkable.place
-          p(class="lead text-muted blog-description")
-            | Blog built with bandwagon technologies like
-            |
-            em AWS Lambda,
-            |
-            |
-            em GraphQL,
-            |
-            |
-            em DynamoDB,
-            |
-            | and
-            |
-            em Node.js
-          hr
+    include ../includes/header.pug
 
     main(role="main" class="container")
       div(class="row")
@@ -40,18 +10,7 @@ html(lang="en")
             div(class="blog-post")
               h2(class="blog-post-title")= page.title
               div !{page.content}
+              a(href="/pages/" + page.id title="Read " + page.title) read
+            br
 
-    footer(class="blog-footer")
-      div(class="container")
-        hr
-        div(class="row")
-            div(class="col-sm-6")
-              p
-                a(href="#") Back to top
-            div(class="col-sm-6")
-              p(class="float-right")
-                a(href="https://github.com/remarkableplace") Source Code
-                |
-                | built by
-                |
-                a(href="https://twitter.com/slashdotpeter") @slashdotpeter
+    include ../includes/footer.pug
