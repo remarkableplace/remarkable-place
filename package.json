@@ -1,5 +1,5 @@
 {
-  "name": "remarkable-server",
+  "name": "remarkable-place",
   "private": true,
   "version": "1.0.0",
   "description": "https://remarkable.place",
@@ -11,22 +11,27 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/remarkableplace/remarkable-server.git"
+    "url": "git+https://github.com/remarkableplace/remarkable-place.git"
   },
   "author": "Peter Marton",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/remarkableplace/remarkable-server/issues"
+    "url": "https://github.com/remarkableplace/remarkable-place/issues"
   },
-  "homepage": "https://github.com/remarkableplace/remarkable-server#readme",
+  "homepage": "https://github.com/remarkableplace/remarkable-place#readme",
   "dependencies": {
-    "apollo-server-restify": "1.2.0",
+    "apollo-server-express": "1.2.0",
     "aws-sdk": "2.160.0",
+    "body-parser": "1.18.2",
     "es6-promisify": "5.0.0",
+    "express": "4.16.2",
+    "github": "12.1.0",
     "graphql": "0.11.7",
     "graphql-tag": "2.5.0",
     "graphql-tools": "2.10.0",
-    "restify": "6.3.4",
+    "lodash": "4.17.4",
+    "oauth": "0.9.15",
+    "safe-compare": "1.1.0",
     "serverless-http": "1.5.2"
   },
   "devDependencies": {

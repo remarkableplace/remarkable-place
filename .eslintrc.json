@@ -9,6 +9,7 @@
   "extends": ["prettier", "airbnb-base"],
   "rules": {
     "prettier/prettier": "error",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "arrow-parens": "off"
   }
 }

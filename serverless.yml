@@ -1,14 +1,59 @@
-service: remarkable-server
+service: remarkable-place
+
+custom:
+  tableName: 'pages-table-${opt:stage, self:provider.stage}'
 
 provider:
   name: aws
   runtime: nodejs6.10
   stage: dev
   region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["PagesDynamoDBTable", "Arn" ] }
+  environment:
+    PAGES_TABLE: ${self:custom.tableName}
+    GITHUB_CLIENT_ID: ${ssm:/remarkable-place-github-oauth-client-id-${opt:stage, self:provider.stage}~true}
+    GITHUB_CLIENT_SECRET: ${ssm:/remarkable-place-github-oauth-client-secret-${opt:stage, self:provider.stage}~true}
+    GITHUB_OAUTH_REDIRECT_URI: ${ssm:/remarkable-place-github-oauth-callback-${opt:stage, self:provider.stage}~true}
 
 functions:
-  app:
-    handler: index.handler
+  admin:
+    handler: src/app-admin/index.handler
+    events:
+      - http: ANY /admin
+      - http: 'ANY /admin/{proxy+}'
+  api:
+    handler: src/app-api/index.handler
+    events:
+      - http: ANY /api
+      - http: 'ANY /api/{proxy+}'
+  web:
+    handler: src/app-web/index.handler
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
+
+resources:
+  Resources:
+    PagesDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: pageId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: pageId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableName}

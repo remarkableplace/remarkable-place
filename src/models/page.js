@@ -1,21 +1,24 @@
+const assert = require('assert');
 const promisify = require('es6-promisify');
 const dynamoDb = require('./dynamoDb');
 
 const dynamoDbScan = promisify(dynamoDb.scan, dynamoDb);
-const TABLE_NAME = 'posts';
+const { PAGES_TABLE } = process.env;
+
+assert.ok(PAGES_TABLE, 'Env. variable PAGES_TABLE is required');
 
 /**
- * Get posts
+ * Get pages
  *
  * @async
  * @function get
- * @returns {Promise<User[]>}
+ * @returns {Promise<Page[]>}
  */
 function get() {
   return dynamoDbScan({
-    TableName: TABLE_NAME,
+    TableName: PAGES_TABLE,
     Limit: 50
-  }).then(posts => posts.Items);
+  }).then(pages => pages.Items);
 }
 
 module.exports = {
