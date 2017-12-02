@@ -49,14 +49,15 @@ function getById(id) {
  * @async
  * @function create
  * @param {Object} page - new page args
+ * @param {String} [page.id] - id, only for testing
  * @param {String} [page.title] - title
  * @param {String} [page.content] - content
  * @returns {Promise<Page>}
  */
-function create({ title = '', content = '' }) {
-  const id = uuid.v1();
+function create({ id, title = '', content = '' }) {
+  const pageId = id || uuid.v1();
   const page = {
-    id,
+    id: pageId,
     title,
     content
   };

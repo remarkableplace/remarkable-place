@@ -5,8 +5,8 @@
   "description": "https://remarkable.place",
   "main": "index.js",
   "scripts": {
-    "test": "ava *.spec.js",
-    "test-watch": "ava --watch *.spec.js",
+    "test": "ava ./src/**/*.test.js",
+    "test-watch": "ava --watch ./src/**/*.test.js",
     "prettier": "prettier --write './**/*.js'",
     "lint": "eslint src"
   },
@@ -47,6 +47,7 @@
     "eslint": "4.12.1",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-ava": "4.3.0",
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-prettier": "2.3.1",
     "prettier": "1.8.2"

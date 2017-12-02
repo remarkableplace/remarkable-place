@@ -4,9 +4,14 @@
     "node": true
   },
   "plugins": [
-    "prettier"
+    "prettier",
+    "ava"
   ],
-  "extends": ["airbnb-base", "prettier"],
+  "extends": [
+    "airbnb-base",
+    "prettier",
+    "plugin:ava/recommended"
+  ],
   "rules": {
     "prettier/prettier": "error",
     "arrow-parens": "off"
