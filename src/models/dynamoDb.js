@@ -9,6 +9,8 @@ if (IS_OFFLINE) {
   dynamoDbConfig.endpoint = 'http://localhost:8000';
 }
 
-const dynamoDb = new AWS.DynamoDB.DocumentClient(dynamoDbConfig);
+const documentClient = new AWS.DynamoDB.DocumentClient(dynamoDbConfig);
+const client = new AWS.DynamoDB(dynamoDbConfig);
 
-module.exports = dynamoDb;
+module.exports = documentClient;
+module.exports.client = client;

@@ -2,8 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 const schema = require('./schema');
+const session = require('../models/session');
 
 const app = express();
+
+app.use(session.middleware);
 
 app.get('/api', (req, res, next) => {
   res.json({

@@ -1,4 +1,5 @@
 const assert = require('assert');
+const url = require('url');
 const crypto = require('crypto');
 const fp = require('lodash/fp');
 const safeCompare = require('safe-compare');
@@ -72,11 +73,15 @@ function getOAuth2(params = {}) {
 /**
  * @function getAuthorizeUrl
  * @param {Object} oauth2Params - { [host], [clientId], [clientSecret], [headers] }
+ * @param {Object} [query] - query strings
  * @returns {String} authorizeUrl
  */
-function getAuthorizeUrl(oauth2Params = {}) {
+function getAuthorizeUrl(oauth2Params = {}, query = {}) {
+  const urlObject = url.parse(GITHUB_OAUTH_REDIRECT_URI);
+  urlObject.query = Object.assign(urlObject.query || {}, query);
+
   return getOAuth2(oauth2Params).getAuthorizeUrl({
-    redirect_uri: GITHUB_OAUTH_REDIRECT_URI,
+    redirect_uri: url.format(urlObject),
     scope: [],
     state: 'authenticate'
   });

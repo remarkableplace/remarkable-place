@@ -9,11 +9,4 @@ app.get('/admin', (req, res, next) => {
   next();
 });
 
-// GitHub Auth
-app.get('/admin/github/authorize', require('./routes/github/authorize/get'));
-app.get(
-  '/admin/github/authorize/callback',
-  require('./routes/github/authorize/callback/get')
-);
-
 module.exports = app;

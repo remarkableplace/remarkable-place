@@ -6,10 +6,9 @@
   "plugins": [
     "prettier"
   ],
-  "extends": ["prettier", "airbnb-base"],
+  "extends": ["airbnb-base", "prettier"],
   "rules": {
     "prettier/prettier": "error",
-    "comma-dangle": "off",
     "arrow-parens": "off"
   }
 }
