@@ -1,4 +1,5 @@
 const assert = require('assert');
+const boom = require('boom');
 const session = require('express-session');
 const createDynamoDbStore = require('connect-dynamodb');
 const { client } = require('./dynamoDb');
@@ -12,13 +13,42 @@ const store = new DynamoDBStore({
   table: SESSIONS_TABLE,
   client
 });
-const middleware = session({
+
+/**
+ * Init session middleware
+ *
+ * @function init
+ * @public
+ * @param {Request} req - request
+ * @param {Response} res - response
+ * @param {Next} next - next
+ * @returns {undefined} no return value
+ */
+const init = session({
   store,
   secret: SESSION_SECRET,
   saveUninitialized: false,
   resave: false
 });
 
+/**
+ * Authorize middleware
+ *
+ * @public
+ * @param {Request} resolver - resolver
+ * @returns {undefined} no return value
+ */
+function authorizeFactory(resolver) {
+  return function authorize(root, args, context, info) {
+    if (!context.req.session.logged) {
+      throw boom.unauthorized();
+    }
+
+    return resolver(root, args, context, info);
+  };
+}
+
 module.exports = {
-  middleware
+  init,
+  authorize: authorizeFactory
 };

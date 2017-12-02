@@ -61,6 +61,7 @@ services:
       IS_OFFLINE: "true"
       SESSIONS_TABLE: sessions
       SESSION_SECRET: secret
+      GITHUB_ORG: remarkableplace
       GITHUB_CLIENT_ID: client-id
       GITHUB_CLIENT_SECRET: client-secret
       GITHUB_OAUTH_REDIRECT_URI: http://localhost:3001/api/github/authorize/callback

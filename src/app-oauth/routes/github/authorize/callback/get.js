@@ -1,13 +1,10 @@
+const boom = require('boom');
 const GitHub = require('../../../../../models/github');
 
 function get(req, res, next) {
   // Handle OAuth Error
   if (req.query.error) {
-    res.statusCode = 401;
-    res.json({
-      error: req.query.error,
-      message: req.query.error_description
-    });
+    next(boom.unauthorized(req.query.error_description));
     return;
   }
 
@@ -15,8 +12,23 @@ function get(req, res, next) {
     code: req.query.code
   })
     .then(result => {
+      // TODO: move to model
+      const github = GitHub.create(result.accessToken);
+      return github.users
+        .get({})
+        .then(resp =>
+          github.orgs
+            .getForUser({ username: resp.data.login })
+            .then(orgResp => ({ user: resp.data, orgs: orgResp.data }))
+        );
+    })
+    .then(({ user, orgs }) => {
+      if (!GitHub.isOrgMember(orgs)) {
+        next(boom.unauthorized(`${user.login} is not part of the org`));
+        return;
+      }
+
       req.session.logged = true;
-      req.session.github = result;
 
       // Redirect is presented
       if (req.query.redirect_uri) {
@@ -29,7 +41,9 @@ function get(req, res, next) {
       res.send();
       next();
     })
-    .catch(err => next(err));
+    .catch(err => {
+      next(boom.unauthorized(err.message));
+    });
 }
 
 module.exports = get;

@@ -1,6 +1,9 @@
 # remarkable-place
 
-https://remarkable.place
+Blog engine backed by bandwagon technologies like AWS Lambda, GraphQL, DynamoDB
+and Node.js. Yes, microservices as well...
+
+Example: https://remarkable.place
 
 ## Applications
 

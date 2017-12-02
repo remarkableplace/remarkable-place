@@ -1,8 +1,8 @@
 service: remarkable-place
 
 custom:
-  pagesTableName: 'pages-table-${opt:stage, self:provider.stage}'
-  sessionsTableName: 'sessions-table-${opt:stage, self:provider.stage}'
+  pagesTableName: ${self:service}-pages-${opt:stage, self:provider.stage}
+  sessionsTableName: ${self:service}-sessions-${opt:stage, self:provider.stage}
 
 provider:
   name: aws
@@ -20,16 +20,18 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - { "Fn::GetAtt": ["PagesDynamoDBTable", "Arn" ] }
+        - { "Fn::GetAtt": ["SessionsDynamoDBTable", "Arn" ] }
   environment:
     # Tables
     PAGES_TABLE: ${self:custom.pagesTableName}
     SESSIONS_TABLE: ${self:custom.sessionsTableName}
     # Session
-    SESSION_SECRET: ${ssm:/remarkable-place-session-secret-${opt:stage, self:provider.stage}~true}
+    SESSION_SECRET: ${ssm:/${self:service}-session-secret-${opt:stage, self:provider.stage}~true}
     # Github OAuth
-    GITHUB_CLIENT_ID: ${ssm:/remarkable-place-github-oauth-client-id-${opt:stage, self:provider.stage}~true}
-    GITHUB_CLIENT_SECRET: ${ssm:/remarkable-place-github-oauth-client-secret-${opt:stage, self:provider.stage}~true}
-    GITHUB_OAUTH_REDIRECT_URI: ${ssm:/remarkable-place-github-oauth-callback-${opt:stage, self:provider.stage}~true}
+    GITHUB_ORG: ${ssm:/${self:service}-github-org-${opt:stage, self:provider.stage}~true}
+    GITHUB_CLIENT_ID: ${ssm:/${self:service}-github-oauth-client-id-${opt:stage, self:provider.stage}~true}
+    GITHUB_CLIENT_SECRET: ${ssm:/${self:service}-github-oauth-client-secret-${opt:stage, self:provider.stage}~true}
+    GITHUB_OAUTH_REDIRECT_URI: ${ssm:/${self:service}-github-oauth-callback-${opt:stage, self:provider.stage}~true}
 
 functions:
   admin:
@@ -60,10 +62,10 @@ resources:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
-          - AttributeName: pageId
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: pageId
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1

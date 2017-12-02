@@ -1,17 +1,17 @@
 const assert = require('assert');
 const url = require('url');
-const crypto = require('crypto');
 const fp = require('lodash/fp');
-const safeCompare = require('safe-compare');
 const GitHubAPI = require('github');
 const { OAuth2 } = require('oauth');
 
 const {
+  GITHUB_ORG,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
   GITHUB_OAUTH_REDIRECT_URI
 } = process.env;
 
+assert.ok(GITHUB_ORG, 'Env. variable GITHUB_ORG is required');
 assert.ok(GITHUB_CLIENT_ID, 'Env. variable GITHUB_CLIENT_ID is required');
 assert.ok(
   GITHUB_CLIENT_SECRET,
@@ -129,23 +129,17 @@ function getAccessToken(params = {}) {
 }
 
 /**
- * @function verifySignature
- * @param {String} signature
- * @param {String} secretToken - different per users
- * @returns {Boolean} isValid
+ * @function isOrgMember
+ * @param {Object[]} orgs - orgs
+ * @returns {Boolean} isOrgMember
  */
-function verifySignature(rawBody, secretToken, signature) {
-  const hash = crypto
-    .createHmac('sha1', secretToken)
-    .update(rawBody)
-    .digest('hex');
-
-  return safeCompare(`sha1=${hash}`, signature);
+function isOrgMember(orgs) {
+  return orgs.some(org => org.login === GITHUB_ORG);
 }
 
 module.exports = {
   create,
   getAuthorizeUrl,
   getAccessToken,
-  verifySignature
+  isOrgMember
 };
