@@ -1,19 +1,12 @@
 version: '3'
 
-volumes:
-    dynamodb_data: {}
-
 services:
-  # DynamoDB
   dynamodb:
     image: cnadiminti/dynamodb-local:latest
-    volumes:
-      - ../.dynamodb_data/:/dynamodb_local_db
     ports:
       - 8000:8000
     restart: always
 
-  # Init DynamoDB
   init-dynamodb:
     image: garland/aws-cli-docker
     command:

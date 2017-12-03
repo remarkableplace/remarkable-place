@@ -1,6 +1,12 @@
 version: '3'
 
+volumes:
+    dynamodb_data: {}
+
 services:
+  dynamodb:
+    volumes:
+      - ../.dynamodb_data/:/dynamodb_local_db
   dev-admin:
     container_name: dev-admin
     build:

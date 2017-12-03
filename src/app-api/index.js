@@ -11,4 +11,8 @@ if (IS_OFFLINE) {
   });
 }
 
+process.on('unhandledRejection', err => {
+  throw err;
+});
+
 module.exports.handler = serverless(app);
