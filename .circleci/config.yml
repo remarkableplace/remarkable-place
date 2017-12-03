@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_docker_engine
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
@@ -28,16 +28,12 @@ jobs:
 
       - run:
           name: Build container
-          command: |
-            set -x
-            cd ~/repo
-            docker-compose build
+          command: docker-compose build
 
       - run:
           name: Start container and verify it's working
           command: |
             set -x
-            cd ~/repo
             docker-compose up
             source .circleci/backoff.sh
             with_backoff curl http://localhost:4003
