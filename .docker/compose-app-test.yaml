@@ -12,8 +12,6 @@ services:
     ports:
       - "4000:3000"
     restart: always
-    depends_on:
-      - init-dynamodb
   test-api:
     container_name: test-api
     build:
@@ -25,8 +23,6 @@ services:
     ports:
       - "4001:3000"
     restart: always
-    depends_on:
-      - init-dynamodb
   test-oauth:
     container_name: test-oauth
     build:
@@ -38,8 +34,6 @@ services:
     ports:
       - "4002:3000"
     restart: always
-    depends_on:
-      - init-dynamodb
   test-web:
     container_name: test-web
     build:
@@ -51,5 +45,3 @@ services:
     ports:
       - "4003:3000"
     restart: always
-    depends_on:
-      - init-dynamodb
