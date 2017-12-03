@@ -1,6 +1,7 @@
 const uuid = require('uuid');
 
-process.env.IS_OFFLINE = 'true';
+process.env.DYNAMODB_REGION = 'localhost';
+process.env.DYNAMODB_ENDPOINT = 'http://localhost:8000';
 process.env.PAGES_TABLE = `test-pages-${uuid.v1()}`;
 
 const test = require('ava');
