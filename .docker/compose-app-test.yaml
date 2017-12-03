@@ -58,7 +58,7 @@ services:
     build:
       context: ../
       dockerfile: .docker/Dockerfile
-    command: node /app/src/app-api
+    command: node /app/src/app-oauth
     env_file:
       - ./local.env
     ports:

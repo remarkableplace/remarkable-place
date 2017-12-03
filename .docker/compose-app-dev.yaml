@@ -38,7 +38,7 @@ services:
       dockerfile: .docker/DockerfileDev
     volumes:
       - "../src/:/app/src/"
-    command: nodemon -w src -e js,pug /app/src/app-api
+    command: nodemon -w src -e js,pug /app/src/app-oauth
     env_file:
       - ./local.env
     ports:
