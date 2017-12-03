@@ -4,6 +4,7 @@ jobs:
     docker:
       - image: circleci/node:8.9.1
       - image: appropriate/curl
+        command: [curl, --version]
 
     working_directory: ~/repo
 
@@ -41,12 +42,14 @@ jobs:
             AWS_ACCESS_KEY_ID: "0"
             AWS_SECRET_ACCESS_KEY: "0"
             AWS_DEFAULT_REGION: localhost
-            IS_OFFLINE: "true"
-            PAGES_TABLE: pages
-            SESSIONS_TABLE: sessions
-            SESSION_SECRET: secret
+            DYNAMODB_REGION: localhost
+            DYNAMODB_ENDPOINT: http://dynamodb:8000
             GITHUB_ORG: remarkableplace
             GITHUB_CLIENT_ID: client-id
             GITHUB_CLIENT_SECRET: client-secret
             GITHUB_OAUTH_REDIRECT_URI: http://localhost:3001/api/github/authorize/callback
+            IS_OFFLINE: "true"
+            PAGES_TABLE: pages
+            SESSIONS_TABLE: sessions
+            SESSION_SECRET: secret
           command: npm test

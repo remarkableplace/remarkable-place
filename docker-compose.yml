@@ -34,9 +34,8 @@ services:
     container_name: admin
     build: .
     command: node src/app-admin
-    environment:
-      IS_OFFLINE: "true"
-      PAGES_TABLE: pages
+    env_file:
+      - ./docker-compose.env
     ports:
       - "4000:3000"
     restart: always
@@ -46,11 +45,8 @@ services:
     container_name: api
     build: .
     command: node src/app-api
-    environment:
-      IS_OFFLINE: "true"
-      PAGES_TABLE: pages
-      SESSIONS_TABLE: sessions
-      SESSION_SECRET: secret
+    env_file:
+      - ./docker-compose.env
     ports:
       - "4001:3000"
     restart: always
@@ -60,14 +56,8 @@ services:
     container_name: oauth
     build: .
     command: node src/app-api
-    environment:
-      IS_OFFLINE: "true"
-      SESSIONS_TABLE: sessions
-      SESSION_SECRET: secret
-      GITHUB_ORG: remarkableplace
-      GITHUB_CLIENT_ID: client-id
-      GITHUB_CLIENT_SECRET: client-secret
-      GITHUB_OAUTH_REDIRECT_URI: http://localhost:3001/api/github/authorize/callback
+    env_file:
+      - ./docker-compose.env
     ports:
       - "4002:3000"
     restart: always
@@ -77,9 +67,8 @@ services:
     container_name: web
     build: .
     command: node src/app-web
-    environment:
-      IS_OFFLINE: "true"
-      PAGES_TABLE: pages
+    env_file:
+      - ./docker-compose.env
     ports:
       - "4003:3000"
     restart: always
