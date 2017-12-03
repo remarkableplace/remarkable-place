@@ -4,6 +4,8 @@ jobs:
     docker:
       - image: circleci/node:8.9.1
 
+    working_directory: ~/repo
+
     steps:
       - checkout
       - setup_remote_docker
@@ -28,6 +30,7 @@ jobs:
           name: Start container and verify it's working
           command: |
             set -x
+            cd ~/repo
             docker-compose up -d
             docker run --network container:web \
               appropriate/curl --retry 10 --retry-delay 2 --retry-connrefused http://localhost:3000
