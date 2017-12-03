@@ -40,6 +40,7 @@ jobs:
           command: |
             set -x
             source .circleci/backoff.sh
+            sleep 60
             with_backoff curl http://localhost:4003
 
       - run:
