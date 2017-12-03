@@ -35,7 +35,7 @@ services:
     build: .
     volumes:
       - "./src/:/app/src/"
-    command: nodemon -w src -e js,pug src/app-admin
+    command: nodemon -w src -e js,pug /app/src/app-admin
     env_file:
       - ./docker-compose.env
     ports:
@@ -48,7 +48,7 @@ services:
     build: .
     volumes:
       - "./src/:/app/src/"
-    command: nodemon -w src -e js,pug src/app-api
+    command: nodemon -w src -e js,pug /app/src/app-api
     env_file:
       - ./docker-compose.env
     ports:
@@ -61,7 +61,7 @@ services:
     build: .
     volumes:
       - "./src/:/app/src/"
-    command: nodemon -w src -e js,pug src/app-api
+    command: nodemon -w src -e js,pug /app/src/app-api
     env_file:
       - ./docker-compose.env
     ports:
@@ -74,7 +74,7 @@ services:
     build: .
     volumes:
       - "./src/:/app/src/"
-    command: nodemon -w src -e js,pug src/app-web
+    command: nodemon -w src -e js,pug /app/src/app-web
     env_file:
       - ./docker-compose.env
     ports:
