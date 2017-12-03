@@ -27,16 +27,16 @@ jobs:
           command: npm run lint
 
       - run:
-          name: Build container
+          name: Build test container
           command: docker-compose -f .docker/compose-db.yaml -f .docker/compose-app-test.yaml build
 
       - run:
-          name: Start container
+          name: Start test container
           command: docker-compose -f .docker/compose-db.yaml -f .docker/compose-app-test.yaml up
           background: true
 
       - run:
-          name: Verify container
+          name: Verify test container
           command: |
             set -x
             source .circleci/backoff.sh
