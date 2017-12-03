@@ -43,7 +43,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY: "0"
             AWS_DEFAULT_REGION: localhost
             DYNAMODB_REGION: localhost
-            DYNAMODB_ENDPOINT: http://dynamodb:8000
+            DYNAMODB_ENDPOINT: http://localhost:8000  # Running inside docker-compose
             GITHUB_ORG: remarkableplace
             GITHUB_CLIENT_ID: client-id
             GITHUB_CLIENT_SECRET: client-secret

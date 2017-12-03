@@ -17,3 +17,16 @@ Example: https://remarkable.place
 ### oauth
 
 http://remarkable.place/oauth/github?redirect_uri=/admin
+
+## Dev
+
+Starts containers with `nodemon`.
+
+```sh
+docker-compose up
+```
+
+- **admin:** http://localhost:4000
+- **api**: http://localhost:4001
+- **oauth**: http://localhost:4002
+- **web**: http://localhost:4003

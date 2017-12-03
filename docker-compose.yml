@@ -33,7 +33,9 @@ services:
   admin:
     container_name: admin
     build: .
-    command: node src/app-admin
+    volumes:
+      - "./src/:/app/src/"
+    command: nodemon -w src -e js,pug src/app-admin
     env_file:
       - ./docker-compose.env
     ports:
@@ -44,7 +46,9 @@ services:
   api:
     container_name: api
     build: .
-    command: node src/app-api
+    volumes:
+      - "./src/:/app/src/"
+    command: nodemon -w src -e js,pug src/app-api
     env_file:
       - ./docker-compose.env
     ports:
@@ -55,7 +59,9 @@ services:
   oauth:
     container_name: oauth
     build: .
-    command: node src/app-api
+    volumes:
+      - "./src/:/app/src/"
+    command: nodemon -w src -e js,pug src/app-api
     env_file:
       - ./docker-compose.env
     ports:
@@ -66,7 +72,9 @@ services:
   web:
     container_name: web
     build: .
-    command: node src/app-web
+    volumes:
+      - "./src/:/app/src/"
+    command: nodemon -w src -e js,pug src/app-web
     env_file:
       - ./docker-compose.env
     ports:
