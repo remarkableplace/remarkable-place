@@ -28,7 +28,7 @@ jobs:
 
       - run:
           name: Build container
-          command: docker-compose -f .docker/docker-compose-test.yaml build
+          command: docker-compose -f .docker/compose-db.yaml -f .docker/compose-app-test.yaml build
 
       - run:
           name: Start container and verify it's working
