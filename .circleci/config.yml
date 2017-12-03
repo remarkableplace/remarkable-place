@@ -32,8 +32,12 @@ jobs:
             set -x
             cd ~/repo
             docker-compose up -d
-            # docker run --network container:web \
-            #   appropriate/curl --retry 24 --retry-delay 5 --retry-connrefused http://localhost:3000
+            curl \
+              --connect-timeout 5 \
+              --max-time 10 \
+              --retry 20 \
+              --retry-delay 10 \
+              --retry-connrefused http://localhost:4003
 
       - run:
           name: Test
