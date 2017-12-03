@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "cover": "nyc --reporter=html --reporter=text --report-dir=.coverage npm run test",
-    "dev": "docker-compose -f .docker/docker-compose-dev.yaml up",
+    "dev": "docker-compose -f .docker/compose-db.yaml -f .docker/compose-app-dev.yaml up",
     "lint": "eslint src",
     "prettier": "prettier --write './**/*.js'",
     "test": "ava ./src/**/*.test.js",
