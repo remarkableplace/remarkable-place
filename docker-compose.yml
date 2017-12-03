@@ -31,6 +31,7 @@ services:
 
   # Apps
   admin:
+    container_name: admin
     build: .
     command: node src/app-admin
     environment:
@@ -42,6 +43,7 @@ services:
     depends_on:
       - init-dynamodb
   api:
+    container_name: api
     build: .
     command: node src/app-api
     environment:
@@ -55,6 +57,7 @@ services:
     depends_on:
       - init-dynamodb
   oauth:
+    container_name: oauth
     build: .
     command: node src/app-api
     environment:
@@ -71,6 +74,7 @@ services:
     depends_on:
       - init-dynamodb
   web:
+    container_name: web
     build: .
     command: node src/app-web
     environment:
