@@ -6,3 +6,7 @@ dynamodb_data
 
 # Serverless directories
 .serverless
+
+# Coverage
+cover
+.nyc_output

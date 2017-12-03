@@ -19,7 +19,7 @@ const resolvers = {
   Mutation: {
     createPage: authorize((root, args) => Page.create(args)),
     updatePage: authorize((root, args) =>
-      getById(args.id).then(page => Page.updateById(args.id, args))
+      getById(args.id).then(() => Page.updateById(args.id, args))
     ),
     removePage: authorize((root, args) =>
       getById(args.id).then(page => Page.removeById(args.id).then(() => page))
