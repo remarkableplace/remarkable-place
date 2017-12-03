@@ -27,6 +27,10 @@ jobs:
           command: npm run lint
 
       - run:
+          name: Build test container
+          command: docker-compose -f .docker/compose-db.yaml -f .docker/compose-app-test.yaml build
+
+      - run:
           name: Start test container
           command: docker-compose -f .docker/compose-db.yaml -f .docker/compose-app-test.yaml up
           background: true
