@@ -15,9 +15,8 @@ assert.ok(PAGES_TABLE, 'Env. variable PAGES_TABLE is required');
 /**
  * Get pages
  *
- * @async
  * @function get
- * @returns {Promise<Page[]>}
+ * @returns {Promise<Page[]>} array of pages
  */
 function get() {
   return dbScan({
@@ -29,10 +28,9 @@ function get() {
 /**
  * Get page by id
  *
- * @async
  * @function getById
  * @param {String} id - page id
- * @returns {Promise<Page>}
+ * @returns {Promise<Page>} page
  */
 function getById(id) {
   return dbGet({
@@ -46,13 +44,12 @@ function getById(id) {
 /**
  * Create page
  *
- * @async
  * @function create
  * @param {Object} page - new page args
  * @param {String} [page.id] - id, only for testing
  * @param {String} [page.title] - title
  * @param {String} [page.content] - content
- * @returns {Promise<Page>}
+ * @returns {Promise<Page>} new page
  */
 function create({ id, title = '', content = '' }) {
   const pageId = id || uuid.v1();
@@ -75,13 +72,12 @@ function create({ id, title = '', content = '' }) {
 /**
  * Create page by id
  *
- * @async
  * @function updateById
  * @param {String} id - page id
  * @param {Object} page - new page args
  * @param {String} page.title - title
  * @param {String} page.content - content
- * @returns {Promise<Page>}
+ * @returns {Promise<Page>} updated page
  */
 function updateById(id, { title, content }) {
   return dbUpdate({
@@ -99,10 +95,9 @@ function updateById(id, { title, content }) {
 /**
  * Remove page by id
  *
- * @async
  * @function removeById
  * @param {String} id - page id
- * @returns {Promise<undefined>}
+ * @returns {Promise<undefined>} no return value
  */
 function removeById(id) {
   return dbDelete({

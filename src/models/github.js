@@ -26,8 +26,8 @@ assert.ok(
  * Create library
  *
  * @function create
- * @param {String} token
- * @returns {Promise}
+ * @param {String} token - token
+ * @returns {Promise<GitHub>} github
  */
 function create(token) {
   const github = new GitHubAPI();
@@ -90,7 +90,6 @@ function getAuthorizeUrl(oauth2Params = {}, query = {}) {
 /**
  * @function getAccessToken
  * @param {Object} params - { code, [host], [clientId], [clientSecret], [headers] }
- * @param {String} code
  * @returns {String} authorizeUrl
  */
 function getAccessToken(params = {}) {

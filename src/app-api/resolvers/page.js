@@ -3,9 +3,9 @@ const Page = require('../../models/page');
 const { authorize } = require('../../models/session');
 
 /**
- * Get page by id, throws 404 when not found
+ * Get single page by id, throws 404 when not found
  *
- * @param {String} id
+ * @param {String} id - page id
  * @returns {Promise<Page>} page
  * @throws {boom.notFound}
  */

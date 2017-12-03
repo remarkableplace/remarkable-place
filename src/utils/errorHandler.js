@@ -5,6 +5,7 @@ const logger = require('pino')();
  * Error handler middleware
  *
  * @public
+ * @param {Error} err - error
  * @param {Request} req - request
  * @param {Response} res - response
  * @param {Next} next - next

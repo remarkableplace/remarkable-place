@@ -2,10 +2,10 @@ const logger = require('pino')();
 const boom = require('boom');
 
 /**
- * Formt GraphQL Error
+ * Format GraphQL Error
  *
- * @param {Error} err
- * @param {boolean} [returnNull=false]
+ * @param {Error} err - error
+ * @param {boolean} [returnNull=false] - return null
  * @returns {*} error output
  */
 function formatGraphQlError(err, returnNull = false) {
