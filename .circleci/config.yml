@@ -34,7 +34,7 @@ jobs:
           name: Start container and verify it's working
           command: |
             set -x
-            docker-compose -f .docker/docker-compose-test.yaml up
+            docker-compose -f .docker/docker-compose-test.yaml up -d
             source .circleci/backoff.sh
             with_backoff curl http://localhost:4003
 
