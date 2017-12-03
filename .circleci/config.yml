@@ -32,12 +32,8 @@ jobs:
             set -x
             cd ~/repo
             docker-compose up -d
-            curl \
-              --connect-timeout 5 \
-              --max-time 10 \
-              --retry 20 \
-              --retry-delay 10 \
-              --retry-connrefused http://localhost:4003
+            source .circleci/backoff.sh
+            with_backoff curl http://localhost:4003
 
       - run:
           name: Test
