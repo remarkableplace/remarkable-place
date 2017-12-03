@@ -7,7 +7,7 @@ const { IS_OFFLINE } = process.env;
 
 if (IS_OFFLINE) {
   app.listen(PORT, () => {
-    logger.info(`admin is now running on http://localhost:${PORT}`);
+    logger.info(`api is now running on http://localhost:${PORT}`);
   });
 }
 
