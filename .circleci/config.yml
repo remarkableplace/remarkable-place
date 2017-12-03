@@ -28,7 +28,7 @@ jobs:
           name: Start container and verify it's working
           command: |
             set -x
-            docker-compose up
+            docker-compose up -d
             docker run --network container:web \
               appropriate/curl --retry 10 --retry-delay 2 --retry-connrefused http://localhost:3000
 
