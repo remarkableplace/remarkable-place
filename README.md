@@ -23,7 +23,7 @@ http://remarkable.place/oauth/github?redirect_uri=/admin
 Starts containers with `nodemon`.
 
 ```sh
-docker-compose up
+npm run dev
 ```
 
 - **admin:** http://localhost:4000

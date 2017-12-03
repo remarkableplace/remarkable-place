@@ -8,7 +8,7 @@ services:
   dynamodb:
     image: cnadiminti/dynamodb-local:latest
     volumes:
-      - ./.dynamodb_data/:/dynamodb_local_db
+      - ../.dynamodb_data/:/dynamodb_local_db
     ports:
       - 8000:8000
     restart: always
@@ -30,11 +30,13 @@ services:
       - dynamodb
 
   # Apps
-  admin:
-    container_name: admin
-    build: .
+  dev-admin:
+    container_name: dev-admin
+    build:
+      context: ../
+      dockerfile: .docker/DockerfileDev
     volumes:
-      - "./src/:/app/src/"
+      - "../src/:/app/src/"
     command: nodemon -w src -e js,pug /app/src/app-admin
     env_file:
       - ./docker-compose.env
@@ -43,11 +45,13 @@ services:
     restart: always
     depends_on:
       - init-dynamodb
-  api:
-    container_name: api
-    build: .
+  dev-api:
+    container_name: dev-api
+    build:
+      context: ../
+      dockerfile: .docker/DockerfileDev
     volumes:
-      - "./src/:/app/src/"
+      - "../src/:/app/src/"
     command: nodemon -w src -e js,pug /app/src/app-api
     env_file:
       - ./docker-compose.env
@@ -56,11 +60,13 @@ services:
     restart: always
     depends_on:
       - init-dynamodb
-  oauth:
-    container_name: oauth
-    build: .
+  dev-oauth:
+    container_name: dev-oauth
+    build:
+      context: ../
+      dockerfile: .docker/DockerfileDev
     volumes:
-      - "./src/:/app/src/"
+      - "../src/:/app/src/"
     command: nodemon -w src -e js,pug /app/src/app-api
     env_file:
       - ./docker-compose.env
@@ -69,11 +75,13 @@ services:
     restart: always
     depends_on:
       - init-dynamodb
-  web:
-    container_name: web
-    build: .
+  dev-web:
+    container_name: dev-web
+    build:
+      context: ../
+      dockerfile: .docker/DockerfileDev
     volumes:
-      - "./src/:/app/src/"
+      - "../src/:/app/src/"
     command: nodemon -w src -e js,pug /app/src/app-web
     env_file:
       - ./docker-compose.env
