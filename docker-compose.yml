@@ -8,7 +8,7 @@ services:
   dynamodb:
     image: cnadiminti/dynamodb-local:latest
     volumes:
-      - ./dynamodb_data/:/dynamodb_local_db
+      - ./.dynamodb_data/:/dynamodb_local_db
     ports:
       - 8000:8000
     restart: always

@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:8.9.1
+      - image: appropriate/curl
 
     working_directory: ~/repo
 
@@ -31,7 +32,8 @@ jobs:
           command: |
             set -x
             docker-compose up -d
-            curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:4003
+            docker run --network container:web \
+              appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000
 
       - run:
           name: Test

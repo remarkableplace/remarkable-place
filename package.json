@@ -5,7 +5,7 @@
   "description": "https://remarkable.place",
   "main": "index.js",
   "scripts": {
-    "cover": "nyc --reporter=html --reporter=text npm run test",
+    "cover": "nyc --reporter=html --reporter=text --report-dir=.coverage npm run test",
     "lint": "eslint src",
     "prettier": "prettier --write './**/*.js'",
     "test": "ava ./src/**/*.test.js",
