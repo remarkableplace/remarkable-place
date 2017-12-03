@@ -27,12 +27,18 @@ jobs:
           command: npm run lint
 
       - run:
-          name: Start container and verify it's working
+          name: Build container
           command: |
             set -x
             cd ~/repo
             docker-compose build
-            docker-compose up -d
+
+      - run:
+          name: Start container and verify it's working
+          command: |
+            set -x
+            cd ~/repo
+            docker-compose up
             source .circleci/backoff.sh
             with_backoff curl http://localhost:4003
 
