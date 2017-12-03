@@ -2,6 +2,13 @@ const boom = require('boom');
 const Page = require('../../models/page');
 const { authorize } = require('../../models/session');
 
+/**
+ * Get page by id, throws 404 when not found
+ *
+ * @param {String} id
+ * @returns {Promise<Page>} page
+ * @throws {boom.notFound}
+ */
 function getById(id) {
   return Page.getById(id).then(page => {
     if (!page) {
