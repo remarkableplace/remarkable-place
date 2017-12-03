@@ -2,6 +2,7 @@ version: '3'
 
 services:
   test-admin:
+    container_name: test-admin
     build:
       context: ../
       dockerfile: .docker/Dockerfile
@@ -14,6 +15,7 @@ services:
     depends_on:
       - init-dynamodb
   test-api:
+    container_name: test-api
     build:
       context: ../
       dockerfile: .docker/Dockerfile
@@ -26,6 +28,7 @@ services:
     depends_on:
       - init-dynamodb
   test-oauth:
+    container_name: test-oauth
     build:
       context: ../
       dockerfile: .docker/Dockerfile
@@ -38,6 +41,7 @@ services:
     depends_on:
       - init-dynamodb
   test-web:
+    container_name: test-web
     build:
       context: ../
       dockerfile: .docker/Dockerfile
