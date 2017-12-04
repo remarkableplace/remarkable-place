@@ -9,10 +9,7 @@ jobs:
       - checkout
       - run:
           name: Setup Node.js
-          command:
-            |
-              curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-              nvm install v8
+          command: nvm install v8; nvm use v8
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
