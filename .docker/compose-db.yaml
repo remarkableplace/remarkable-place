@@ -6,6 +6,11 @@ services:
     ports:
       - 8000:8000
     restart: always
+    healthcheck:
+      test: curl -f http://localhost:8000/shell/ || exit 1
+      interval: 1s
+      timeout: 10s
+      retries: 3
 
   init-dynamodb:
     image: garland/aws-cli-docker

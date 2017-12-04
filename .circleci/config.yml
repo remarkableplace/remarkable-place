@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build:
+    machine: true
     docker:
       - image: circleci/node:8.9.1
 
@@ -40,7 +41,7 @@ jobs:
           command: |
             set -x
             source .circleci/backoff.sh
-            with_backoff nc -zv 127.0.0.1 8000
+            with_backoff curl http://localhost:4003
 
       - run:
           name: Test
