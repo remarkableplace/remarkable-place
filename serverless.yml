@@ -20,9 +20,10 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - { "Fn::GetAtt": ["AuthorsDynamoDBTable", "Arn" ] }
-        - { "Fn::GetAtt": ["PagesDynamoDBTable", "Arn" ] }
-        - { "Fn::GetAtt": ["SessionsDynamoDBTable", "Arn" ] }
+        - "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/${self:custom.authorsTableName}*"]]
+        - "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/${self:custom.pagesTableName}*"]]
+        - "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/${self:custom.sessionsTableName}*"]]
+
   environment:
     # Tables
     AUTHORS_TABLE: ${self:custom.authorsTableName}
