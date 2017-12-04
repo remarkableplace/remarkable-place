@@ -1,11 +1,12 @@
 const _ = require('lodash');
 const { makeExecutableSchema } = require('graphql-tools');
-const pageTypeDef = require('./types/page');
+const typeDefs = require('./types');
+const authorResolvers = require('./resolvers/author');
 const pageResolvers = require('./resolvers/page');
 
 const schema = makeExecutableSchema({
-  typeDefs: [pageTypeDef],
-  resolvers: _.merge(pageResolvers)
+  typeDefs,
+  resolvers: _.merge(authorResolvers, pageResolvers)
 });
 
 module.exports = schema;

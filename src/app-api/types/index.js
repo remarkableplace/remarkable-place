@@ -1,18 +1,29 @@
 const gql = require('graphql-tag');
 
 const typeDefs = gql`
+  type Author {
+    id: ID!
+    name: String!
+    pages: [Page]
+  }
+
   type Page {
     id: ID!
+    author: Author
     title: String
     content: String
   }
 
   type Query {
+    authors: [Author]
+    author(id: String!): Author
     pages: [Page]
     page(id: String!): Page
   }
 
   type Mutation {
+    updateAuthor(id: String!, name: String!): Author
+    removeAuthor(id: String!): Author
     createPage(title: String!, content: String!): Page
     updatePage(id: String!, title: String!, content: String!): Page
     removePage(id: String!): Page

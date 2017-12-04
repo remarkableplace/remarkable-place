@@ -1,7 +1,12 @@
 const AWS = require('aws-sdk');
 
-const { DYNAMODB_REGION, DYNAMODB_ENDPOINT } = process.env;
+const { IS_OFFLINE, DYNAMODB_REGION, DYNAMODB_ENDPOINT } = process.env;
 const dynamoDbConfig = {};
+
+if (IS_OFFLINE) {
+  dynamoDbConfig.region = 'localhost';
+  dynamoDbConfig.endpoint = 'http://localhost:8000';
+}
 
 if (DYNAMODB_REGION) {
   dynamoDbConfig.region = DYNAMODB_REGION;

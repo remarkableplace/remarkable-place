@@ -1,0 +1,12 @@
+FROM node:6.10
+
+RUN mkdir /app
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y python-pip libpython-dev
+RUN pip install awscli
+RUN npm install -g yaml-cli
+
+ADD .docker/createtable.sh /createtable.sh
+
+CMD [".docker", "createtable.sh"]

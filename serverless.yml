@@ -1,6 +1,7 @@
 service: remarkable-place
 
 custom:
+  authorsTableName: ${self:service}-authors-${opt:stage, self:provider.stage}
   pagesTableName: ${self:service}-pages-${opt:stage, self:provider.stage}
   sessionsTableName: ${self:service}-sessions-${opt:stage, self:provider.stage}
 
@@ -19,10 +20,12 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
+        - { "Fn::GetAtt": ["AuthorsDynamoDBTable", "Arn" ] }
         - { "Fn::GetAtt": ["PagesDynamoDBTable", "Arn" ] }
         - { "Fn::GetAtt": ["SessionsDynamoDBTable", "Arn" ] }
   environment:
     # Tables
+    AUTHORS_TABLE: ${self:custom.authorsTableName}
     PAGES_TABLE: ${self:custom.pagesTableName}
     SESSIONS_TABLE: ${self:custom.sessionsTableName}
     # Session
@@ -57,12 +60,14 @@ functions:
 
 resources:
   Resources:
-    # Pages table
-    PagesDynamoDBTable:
+    # Authors table
+    AuthorsDynamoDBTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
           - AttributeName: id
+            AttributeType: S
+          - AttributeName: githubId
             AttributeType: S
         KeySchema:
           - AttributeName: id
@@ -70,6 +75,43 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: GithubIdIndex
+            KeySchema:
+              - AttributeName: githubId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        TableName: ${self:custom.authorsTableName}
+
+    # Pages table
+    PagesDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: authorId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: AuthorIdIndex
+            KeySchema:
+              - AttributeName: authorId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
         TableName: ${self:custom.pagesTableName}
 
     # Sessions table
