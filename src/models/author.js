@@ -72,8 +72,8 @@ function create({ id = uuid.v1(), githubId, name }) {
   const author = {
     id,
     githubId: githubId.toString(), // github api returns it as number
-    createdAt: new Date(),
-    updated: new Date(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     name
   };
 
@@ -96,10 +96,10 @@ function updateById(id, { name }) {
   return dbUpdate({
     TableName: AUTHORS_TABLE,
     Key: { id },
-    UpdateExpression: 'set title = :name, updated: updatedAt',
+    UpdateExpression: 'set title= :name, updatedAt= :updatedAt',
     ExpressionAttributeValues: {
       ':name': name,
-      ':updatedAt': new Date()
+      ':updatedAt': new Date().toISOString()
     },
     ReturnValues: 'ALL_NEW'
   }).then(data => data.Attributes);

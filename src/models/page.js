@@ -76,8 +76,8 @@ function create({ id = uuid.v1(), authorId, title = '', content = '' }) {
 
   const page = {
     id,
-    createdAt: new Date(),
-    updated: new Date(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     authorId,
     title,
     content
@@ -104,11 +104,11 @@ function updateById(id, { title, content }) {
     TableName: PAGES_TABLE,
     Key: { id },
     UpdateExpression:
-      'set title = :title, content=:content, updated: updatedAt',
+      'set title = :title, content= :content, updatedAt= :updatedAt',
     ExpressionAttributeValues: {
       ':title': title,
       ':content': content,
-      ':updatedAt': new Date()
+      ':updatedAt': new Date().toISOString()
     },
     ReturnValues: 'ALL_NEW'
   }).then(data => data.Attributes);
