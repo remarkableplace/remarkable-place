@@ -55,10 +55,12 @@ const resolvers = {
   Mutation: {
     createPage: authorize(create),
     updatePage: authorize((root, args) =>
-      getById(args.id).then(() => Page.updateById(args.id, args))
+      getById(root, args).then(() => Page.updateById(args.id, args))
     ),
     removePage: authorize((root, args) =>
-      getById(args.id).then(page => Page.removeById(args.id).then(() => page))
+      getById(root, args).then(page =>
+        Page.removeById(args.id).then(() => page)
+      )
     )
   }
 };

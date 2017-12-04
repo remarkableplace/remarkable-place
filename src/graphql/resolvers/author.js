@@ -32,10 +32,10 @@ const resolvers = {
   },
   Mutation: {
     updateAuthor: authorize((root, args) =>
-      getById(args.id).then(() => Author.updateById(args.id, args))
+      getById(root, args).then(() => Author.updateById(args.id, args))
     ),
     removeAuthor: authorize((root, args) =>
-      getById(args.id).then(author =>
+      getById(root, args).then(author =>
         Author.removeById(args.id).then(() => author)
       )
     )
