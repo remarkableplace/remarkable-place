@@ -61,11 +61,7 @@ function create({ id, title = '', content = '' }) {
 
   return dbPut({
     TableName: PAGES_TABLE,
-    Item: {
-      id,
-      title,
-      content
-    }
+    Item: page
   }).then(() => page);
 }
 
