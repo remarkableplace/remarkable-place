@@ -30,3 +30,6 @@ npm run dev
 - **api**: http://localhost:4001
 - **oauth**: http://localhost:4002
 - **web**: http://localhost:4003
+
+You may want to provide `GITHUB_ORG`, `GITHUB_CLIENT_ID`, and
+`GITHUB_CLIENT_SECRET` environment variables.

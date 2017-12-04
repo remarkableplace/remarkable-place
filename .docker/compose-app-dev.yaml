@@ -41,6 +41,10 @@ services:
     command: nodemon -w src -e js,pug /app/src/app-oauth
     env_file:
       - ./local.env
+    environment:
+       - "GITHUB_ORG=${GITHUB_ORG:-remarkableplace}"
+       - "GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-client-id}"
+       - "GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-client-secret}"
     ports:
       - "4002:3000"
     restart: always

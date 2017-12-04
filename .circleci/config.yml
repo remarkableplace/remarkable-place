@@ -60,7 +60,7 @@ jobs:
             GITHUB_ORG: remarkableplace
             GITHUB_CLIENT_ID: client-id
             GITHUB_CLIENT_SECRET: client-secret
-            GITHUB_OAUTH_REDIRECT_URI: http://localhost:3001/api/github/authorize/callback
+            GITHUB_OAUTH_REDIRECT_URI: http://localhost:4002/oauth/github/callback
             IS_OFFLINE: "true"
             PAGES_TABLE: pages
             SESSIONS_TABLE: sessions
