@@ -35,12 +35,12 @@ jobs:
           command: docker-compose -f .docker/compose-db.yaml up
           background: true
 
-    #   - run:
-    #       name: Verify test container
-    #       command: |
-    #         set -x
-    #         source .circleci/backoff.sh
-    #         with_backoff curl http://localhost:4003
+      - run:
+          name: Verify test container
+          command: |
+            set -x
+            source .circleci/backoff.sh
+            with_backoff nc -zv 127.0.0.1 8000
 
       - run:
           name: Test
