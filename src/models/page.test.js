@@ -14,7 +14,7 @@ test.beforeEach(() => {
   id = uuid.v1();
   authorId = uuid.v1();
 });
-test.afterEach(() => Page.removeById(id));
+test.afterEach.always(() => Page.removeById(id));
 
 test.serial('get pages from database', async t => {
   await Page.create({

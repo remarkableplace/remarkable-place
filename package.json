@@ -40,6 +40,7 @@
     "lodash": "4.17.4",
     "markdown-it": "8.4.0",
     "markdown-it-prism": "1.1.1",
+    "moment": "2.19.3",
     "oauth": "0.9.15",
     "pino": "4.10.2",
     "pug": "2.0.0-rc.4",

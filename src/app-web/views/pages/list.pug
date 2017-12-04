@@ -5,10 +5,16 @@ html(lang="en")
 
     main(role="main" class="container")
       div(class="row")
-        div(class="col-sm-8 blog-main")
+        div(class="col-sm-8 offset-2 blog-main")
+          unless pages.length
+            p Empty
           each page in pages
             div(class="blog-post")
               h2(class="blog-post-title")= page.title
+              p(class="text-muted")
+                small by #{page.author.name}
+                span(class="float-right")
+                  small #{page.createdAt}
               div !{page.content}
               a(href="/pages/" + page.id title="Read " + page.title) read
             br

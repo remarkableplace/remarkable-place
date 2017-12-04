@@ -1,11 +1,29 @@
+const moment = require('moment');
 const Markdown = require('../../../../models/markdown');
-const Page = require('../../../../models/page');
+const graphql = require('../../../../graphql');
 
 function get(req, res, next) {
-  Page.getById(req.params.id)
-    .then(page => {
+  const query = `
+    query {
+      page(id: "${req.params.id}") {
+        id
+        title
+        content
+        createdAt
+        author {
+          id
+          name
+        }
+      }
+    }
+  `;
+
+  graphql(query)
+    .then(({ page }) => {
       const renderedPage = Object.assign({}, page, {
-        content: Markdown.render(page.content || '')
+        createdAt: moment(page.createdAt).format('YYYY/MM/DD'),
+        content: Markdown.render(page.content || ''),
+        author: page.author || { name: 'anonymus' }
       });
 
       res.render('pages/view', {

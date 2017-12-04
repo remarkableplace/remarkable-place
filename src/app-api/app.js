@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
-const schema = require('./schema');
+const schema = require('../graphql/schema');
 const errorHandler = require('../utils/errorHandler');
 const formatGraphQlError = require('../utils/formatGraphQlError');
 const session = require('../models/session');

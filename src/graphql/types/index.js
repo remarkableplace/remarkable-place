@@ -12,6 +12,8 @@ const typeDefs = gql`
     author: Author
     title: String
     content: String
+    createdAt: String
+    updatedAt: String
   }
 
   type Query {
