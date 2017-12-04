@@ -1,14 +1,21 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: circleci/node:8.9.1
+    machine: true
 
     working_directory: ~/repo
 
     steps:
       - checkout
-      - setup_remote_docker
+
+      - run:
+          name: Setup Node.js
+          command:
+            |
+              curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+              source ~/.bashrc
+              nvm install v8
+
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
@@ -27,13 +34,20 @@ jobs:
           command: npm run lint
 
       - run:
-          name: Start container and verify it's working
+          name: Build test container
+          command: docker-compose -f .docker/compose-db.yaml -f .docker/compose-app-test.yaml build
+
+      - run:
+          name: Start test container
+          command: docker-compose -f .docker/compose-db.yaml -f .docker/compose-app-test.yaml up
+          background: true
+
+      - run:
+          name: Verify test container
           command: |
             set -x
-            cd ~/repo
-            docker-compose up -d
-            # docker run --network container:web \
-            #   appropriate/curl --retry 24 --retry-delay 5 --retry-connrefused http://localhost:3000
+            source .circleci/backoff.sh
+            with_backoff curl http://localhost:4003
 
       - run:
           name: Test

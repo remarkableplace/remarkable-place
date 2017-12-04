@@ -1,0 +1,60 @@
+version: '3'
+
+volumes:
+    dynamodb_data: {}
+
+services:
+  dynamodb:
+    volumes:
+      - ../.dynamodb_data/:/dynamodb_local_db
+  dev-admin:
+    build:
+      context: ../
+      dockerfile: .docker/DockerfileDev
+    image: remarkable-place/app
+    volumes:
+      - "../src/:/app/src/"
+    command: nodemon -w src -e js,pug /app/src/app-admin
+    env_file:
+      - ./local.env
+    ports:
+      - "4000:3000"
+    restart: always
+    depends_on:
+      - init-dynamodb
+  dev-api:
+    image: remarkable-place/app
+    volumes:
+      - "../src/:/app/src/"
+    command: nodemon -w src -e js,pug /app/src/app-api
+    env_file:
+      - ./local.env
+    ports:
+      - "4001:3000"
+    restart: always
+    depends_on:
+      - dev-admin
+  dev-oauth:
+    image: remarkable-place/app
+    volumes:
+      - "../src/:/app/src/"
+    command: nodemon -w src -e js,pug /app/src/app-oauth
+    env_file:
+      - ./local.env
+    ports:
+      - "4002:3000"
+    restart: always
+    depends_on:
+      - dev-admin
+  dev-web:
+    image: remarkable-place/app
+    volumes:
+      - "../src/:/app/src/"
+    command: nodemon -w src -e js,pug /app/src/app-web
+    env_file:
+      - ./local.env
+    ports:
+      - "4003:3000"
+    restart: always
+    depends_on:
+      - dev-admin
