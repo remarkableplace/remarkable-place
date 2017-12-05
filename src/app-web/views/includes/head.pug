@@ -15,3 +15,13 @@ head
     href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/themes/prism.css"
     rel="stylesheet"
   )
+
+  //- Google Analytics
+  if (analytics.ga)
+    script(async src="https://www.googletagmanager.com/gtag/js?id=" + analytics.ga)
+    script
+      | window.dataLayer = window.dataLayer || [];
+      | function gtag(){dataLayer.push(arguments);}
+      | gtag('js', new Date());
+      | gtag('config', '#{analytics.ga}');
+
