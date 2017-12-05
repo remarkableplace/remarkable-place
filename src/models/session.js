@@ -40,8 +40,8 @@ const init = session({
  */
 function authorizeFactory(resolver) {
   return function authorize(root, args, context, info) {
-    if (!context.session || !context.session.logged) {
-      throw boom.unauthorized();
+    if (!context || !context.session || !context.session.logged) {
+      return Promise.reject(boom.unauthorized());
     }
 
     return resolver(root, args, context, info);

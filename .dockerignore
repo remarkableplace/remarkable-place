@@ -2,13 +2,13 @@
 node_modules
 jspm_packages
 package-lock.json
-dynamodb_data
+.dynamodb_data
 
 # Serverless directories
 .serverless
 
 # Coverage
-cover
+.coverage
 .nyc_output
 
 # Tests

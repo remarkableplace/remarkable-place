@@ -1,7 +1,6 @@
 const uuid = require('uuid');
 
-process.env.DYNAMODB_REGION = 'localhost';
-process.env.DYNAMODB_ENDPOINT = 'http://localhost:8000';
+process.env.IS_OFFLINE = 'true';
 process.env.PAGES_TABLE = 'pages';
 process.env.AUTHORS_TABLE = 'authors';
 process.env.SESSIONS_TABLE = 'sessions';
@@ -112,6 +111,24 @@ test.serial('get page by id with author', async t => {
   });
 });
 
+test.serial('get page by id not found', async t => {
+  t.plan(1);
+
+  const query = `
+    query {
+      page(id: "unknown") {
+        id
+      }
+    }
+  `;
+
+  try {
+    await client(query);
+  } catch (err) {
+    t.truthy(err);
+  }
+});
+
 test.serial('create page', async t => {
   await Author.create({
     id: authorId,
@@ -138,6 +155,52 @@ test.serial('create page', async t => {
   });
 
   await Page.removeById(result.createPage.id);
+});
+
+test.serial('create page rejects for unknown author', async t => {
+  t.plan(1);
+
+  const query = `
+    mutation {
+      createPage(title: "My Article", content: "My Content") {
+        id
+        title
+        content
+      }
+    }
+  `;
+
+  try {
+    await client(query, {}, { session: { logged: true, authorId: undefined } });
+  } catch (err) {
+    t.truthy(err.message);
+  }
+});
+
+test('create rejects for unauthorized users', async t => {
+  t.plan(1);
+
+  await Author.create({
+    id: authorId,
+    fullName: 'Jane',
+    githubId: authorGithubId
+  });
+
+  const query = `
+    mutation {
+      createPage(title: "My Article", content: "My Content") {
+        id
+        title
+        content
+      }
+    }
+  `;
+
+  try {
+    await client(query, {}, {});
+  } catch (err) {
+    t.truthy(err.message);
+  }
 });
 
 test.serial('update page by id', async t => {
@@ -302,6 +365,22 @@ test.serial('get author by id with pages', async t => {
   });
 });
 
+test.serial('get author rejects when not found', async t => {
+  t.plan(1);
+
+  const query = `
+    author(id: "unknown") {
+      id
+    }
+  `;
+
+  try {
+    await client(query, {}, context);
+  } catch (err) {
+    t.truthy(err.message);
+  }
+});
+
 test.serial('update author by id', async t => {
   await Author.create({
     id: authorId,
@@ -327,4 +406,75 @@ test.serial('update author by id', async t => {
 
   const author = await Author.getById(authorId);
   t.deepEqual(author.fullName, 'Jane 2');
+});
+
+test.serial('update author by id rejects with not found', async t => {
+  t.plan(1);
+
+  const query = `
+    mutation {
+      updateAuthor(id: "unknown", fullName: "Jane 2") {
+        id
+      }
+    }
+  `;
+
+  try {
+    await client(query, {}, context);
+  } catch (err) {
+    t.truthy(err.message);
+  }
+});
+
+test.serial('remove author by id, keeps page', async t => {
+  let author = await Author.create({
+    id: authorId,
+    fullName: 'Jane',
+    githubId: authorGithubId
+  });
+
+  let page = await Page.create({
+    id,
+    title: 'My Article',
+    content: 'My Content',
+    authorId: author.id
+  });
+
+  const query = `
+    mutation {
+      removeAuthor(id: "${authorId}") {
+        id
+      }
+    }
+  `;
+
+  const result = await client(query, {}, context);
+
+  t.deepEqual(result.removeAuthor, {
+    id: authorId
+  });
+
+  author = await Author.getById(authorId);
+  t.falsy(author);
+
+  page = await Page.getById(id);
+  t.truthy(page);
+});
+
+test.serial('remove author by id rejects with not found', async t => {
+  t.plan(1);
+
+  const query = `
+    mutation {
+      removeAuthor(id: "unknown", fullName: "Jane 2") {
+        id
+      }
+    }
+  `;
+
+  try {
+    await client(query, {}, context);
+  } catch (err) {
+    t.truthy(err.message);
+  }
 });

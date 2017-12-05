@@ -1,7 +1,6 @@
 const uuid = require('uuid');
 
-process.env.DYNAMODB_REGION = 'localhost';
-process.env.DYNAMODB_ENDPOINT = 'http://localhost:8000';
+process.env.IS_OFFLINE = 'true';
 process.env.PAGES_TABLE = 'pages';
 
 const test = require('ava');
@@ -94,6 +93,36 @@ test.serial('get page by id from database throws without id', async t => {
     await Page.getById();
   } catch (err) {
     t.deepEqual(err.message, 'id is required');
+  }
+});
+
+test.serial('get page by author id from database', async t => {
+  await Page.create({
+    id,
+    authorId,
+    title: 'Title',
+    content: 'Content'
+  });
+
+  const pages = await Page.getByAuthorId(authorId);
+  t.deepEqual(pages, [
+    {
+      id,
+      authorId,
+      title: 'Title',
+      content: 'Content',
+      createdAt: pages[0].createdAt,
+      updatedAt: pages[0].updatedAt
+    }
+  ]);
+});
+
+test.serial('get page by authorId from database throws without id', async t => {
+  t.plan(1);
+  try {
+    await Page.getByAuthorId();
+  } catch (err) {
+    t.deepEqual(err.message, 'authorId is required');
   }
 });
 

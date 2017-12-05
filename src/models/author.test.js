@@ -1,7 +1,6 @@
 const uuid = require('uuid');
 
-process.env.DYNAMODB_REGION = 'localhost';
-process.env.DYNAMODB_ENDPOINT = 'http://localhost:8000';
+process.env.IS_OFFLINE = 'true';
 process.env.AUTHORS_TABLE = 'authors';
 
 const test = require('ava');
