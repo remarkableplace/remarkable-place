@@ -16,6 +16,37 @@ test.beforeEach(() => {
 });
 test.afterEach.always(() => Page.removeById(id));
 
+test.serial('create page', async t => {
+  const page = await Page.create({
+    id,
+    title: 'My Article',
+    content: 'My Content',
+    authorId
+  });
+
+  t.deepEqual(page, {
+    id,
+    authorId,
+    title: 'My Article',
+    content: 'My Content',
+    createdAt: page.createdAt,
+    updatedAt: page.updatedAt
+  });
+});
+
+test.serial('create page throws error without authorId', async t => {
+  t.plan(1);
+  try {
+    await Page.create({
+      id,
+      title: 'My Article',
+      content: 'My Content'
+    });
+  } catch (err) {
+    t.deepEqual(err.message, 'authorId is required');
+  }
+});
+
 test.serial('get pages from database', async t => {
   await Page.create({
     id,
@@ -57,6 +88,15 @@ test.serial('get page by id from database', async t => {
   });
 });
 
+test.serial('get page by id from database throws without id', async t => {
+  t.plan(1);
+  try {
+    await Page.getById();
+  } catch (err) {
+    t.deepEqual(err.message, 'id is required');
+  }
+});
+
 test.serial('update page by id in database', async t => {
   await Page.create({
     id,
@@ -89,6 +129,37 @@ test.serial('update page by id in database', async t => {
   });
 });
 
+test.serial('update page throws error with id payload', async t => {
+  t.plan(1);
+  try {
+    await Page.updateById(id, {
+      id: 'new id'
+    });
+  } catch (err) {
+    t.deepEqual(err.message, 'id cannot be updated');
+  }
+});
+
+test.serial('update page throws error with authorId payload', async t => {
+  t.plan(1);
+  try {
+    await Page.updateById(id, {
+      authorId: 'new authorId'
+    });
+  } catch (err) {
+    t.deepEqual(err.message, 'authorId cannot be updated');
+  }
+});
+
+test.serial('update page by id from database throws without id', async t => {
+  t.plan(1);
+  try {
+    await Page.updateById(undefined, {});
+  } catch (err) {
+    t.deepEqual(err.message, 'id is required');
+  }
+});
+
 test.serial('remove page from database', async t => {
   await Page.create({
     id,
@@ -101,4 +172,13 @@ test.serial('remove page from database', async t => {
 
   const page = await Page.getById(id);
   t.falsy(page);
+});
+
+test.serial('remove page by id from database throws without id', async t => {
+  t.plan(1);
+  try {
+    await Page.removeById();
+  } catch (err) {
+    t.deepEqual(err.message, 'id is required');
+  }
 });

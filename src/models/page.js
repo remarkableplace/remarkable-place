@@ -1,5 +1,6 @@
 const assert = require('assert');
 const uuid = require('uuid');
+const _ = require('lodash');
 const promisify = require('es6-promisify');
 const dynamoDb = require('./dynamoDb');
 
@@ -34,6 +35,10 @@ function get() {
  * @returns {Promise<Page>} page
  */
 function getById(id) {
+  if (!id) {
+    return Promise.reject(new Error('id is required'));
+  }
+
   return dbGet({
     TableName: PAGES_TABLE,
     Key: {
@@ -50,6 +55,10 @@ function getById(id) {
  * @returns {Promise<[Page]>} pages
  */
 function getByAuthorId(authorId) {
+  if (!authorId) {
+    return Promise.reject(new Error('authorId is required'));
+  }
+
   return dbQuery({
     TableName: PAGES_TABLE,
     IndexName: 'AuthorIdIndex',
@@ -71,8 +80,10 @@ function getByAuthorId(authorId) {
  * @param {String} [page.content] - content
  * @returns {Promise<Page>} new page
  */
-function create({ id = uuid.v1(), authorId, title = '', content = '' }) {
-  assert.ok(authorId, 'authorId is required');
+function create({ id = uuid.v1(), authorId, title = '', content = '' } = {}) {
+  if (!authorId) {
+    return Promise.reject(new Error('authorId is required'));
+  }
 
   const page = {
     id,
@@ -94,22 +105,39 @@ function create({ id = uuid.v1(), authorId, title = '', content = '' }) {
  *
  * @function updateById
  * @param {String} id - page id
- * @param {Object} page - new page args
- * @param {String} page.title - title
- * @param {String} page.content - content
+ * @param {Object} pageArgs - new args
+ * @param {String} [pageArgs.title] - title
+ * @param {String} [pageArgs.content] - content
  * @returns {Promise<Page>} updated page
  */
-function updateById(id, { title, content }) {
+function updateById(id, pageArgs = {}) {
+  if (!id) {
+    return Promise.reject(new Error('id is required'));
+  }
+
+  if (pageArgs.id) {
+    return Promise.reject(new Error('id cannot be updated'));
+  }
+
+  if (pageArgs.authorId) {
+    return Promise.reject(new Error('authorId cannot be updated'));
+  }
+
+  let UpdateExpression = _.map(pageArgs, (value, key) => `${key}= :${key}`);
+  UpdateExpression.push('updatedAt= :updatedAt');
+  UpdateExpression = `set ${UpdateExpression.join(', ')}`;
+
+  const ExpressionAttributeValues = _.mapKeys(
+    pageArgs,
+    (value, key) => `:${key}`
+  );
+  ExpressionAttributeValues[':updatedAt'] = new Date().toISOString();
+
   return dbUpdate({
     TableName: PAGES_TABLE,
     Key: { id },
-    UpdateExpression:
-      'set title = :title, content= :content, updatedAt= :updatedAt',
-    ExpressionAttributeValues: {
-      ':title': title,
-      ':content': content,
-      ':updatedAt': new Date().toISOString()
-    },
+    UpdateExpression,
+    ExpressionAttributeValues,
     ReturnValues: 'ALL_NEW'
   }).then(data => data.Attributes);
 }
@@ -122,6 +150,10 @@ function updateById(id, { title, content }) {
  * @returns {Promise<undefined>} no return value
  */
 function removeById(id) {
+  if (!id) {
+    return Promise.reject(new Error('id is required'));
+  }
+
   return dbDelete({
     TableName: PAGES_TABLE,
     Key: {
