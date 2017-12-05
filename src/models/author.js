@@ -1,4 +1,5 @@
 const assert = require('assert');
+const _ = require('lodash');
 const promisify = require('es6-promisify');
 const uuid = require('uuid');
 const dynamoDb = require('./dynamoDb');
@@ -34,6 +35,10 @@ function get() {
  * @returns {Promise<Author>} author
  */
 function getById(id) {
+  if (!id) {
+    return Promise.reject(new Error('id is required'));
+  }
+
   return dbGet({
     TableName: AUTHORS_TABLE,
     Key: { id }
@@ -48,6 +53,10 @@ function getById(id) {
  * @returns {Promise<Author>} author
  */
 function getByGithubId(githubId) {
+  if (!githubId) {
+    return Promise.reject(new Error('githubId is required'));
+  }
+
   return dbQuery({
     TableName: AUTHORS_TABLE,
     IndexName: 'GithubIdIndex',
@@ -62,19 +71,38 @@ function getByGithubId(githubId) {
  * Create author
  *
  * @function create
- * @param {Object} author - new author args
- * @param {String} author.id - id
- * @param {String} author.githubId - GitHub id
- * @param {String} author.name - name
+ * @param {Object} authorArgs - new author args
+ * @param {String} authorArgs.id - id
+ * @param {String} authorArgs.githubId - GitHub id
+ * @param {String} [authorArgs.githubHandle] - GutHub login (handle)
+ * @param {String} [authorArgs.fullName] - fullName
+ * @param {String} [authorArgs.avatarUrl] - avatarUrl
+ * @param {String} [authorArgs.bio] - bio
  * @returns {Promise<Author>} new author
  */
-function create({ id = uuid.v1(), githubId, name }) {
+function create(
+  {
+    id = uuid.v1(),
+    githubId,
+    githubHandle = null,
+    fullName = null,
+    bio = null,
+    avatarUrl = null
+  } = {}
+) {
+  if (!githubId) {
+    return Promise.reject(new Error('githubId is required'));
+  }
+
   const author = {
     id,
     githubId: githubId.toString(), // github api returns it as number
+    githubHandle,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    name
+    fullName,
+    bio,
+    avatarUrl
   };
 
   return dbPut({
@@ -88,19 +116,40 @@ function create({ id = uuid.v1(), githubId, name }) {
  *
  * @function updateById
  * @param {String} id - author's id
- * @param {Object} author - new author args
- * @param {String} author.name - name
+ * @param {Object} authorArgs - new author args
+ * @param {String} [authorArgs.fullName] - fullName
+ * @param {String} [authorArgs.githubHandle] - GutHub login (handle)
+ * @param {String} [authorArgs.avatarUrl] - avatarUrl
+ * @param {String} [authorArgs.bio] - bio
  * @returns {Promise<Author>} updated author
  */
-function updateById(id, { name }) {
+function updateById(id, authorArgs = {}) {
+  if (!id) {
+    return Promise.reject(new Error('id is required'));
+  }
+
+  if (authorArgs.id) {
+    return Promise.reject(new Error('id cannot be updated'));
+  }
+
+  let UpdateExpression = _.map(authorArgs, (value, key) => `${key}= :${key}`);
+  UpdateExpression.push('updatedAt= :updatedAt');
+  UpdateExpression = `set ${UpdateExpression.join(', ')}`;
+
+  const ExpressionAttributeValues = _.mapKeys(
+    authorArgs,
+    (value, key) => `:${key}`
+  );
+  ExpressionAttributeValues[':updatedAt'] = new Date().toISOString();
+
   return dbUpdate({
     TableName: AUTHORS_TABLE,
     Key: { id },
-    UpdateExpression: 'set title= :name, updatedAt= :updatedAt',
-    ExpressionAttributeValues: {
-      ':name': name,
-      ':updatedAt': new Date().toISOString()
-    },
+    UpdateExpression,
+    ExpressionAttributeValues: Object.assign(
+      { ':updatedAt': new Date().toISOString() },
+      ExpressionAttributeValues
+    ),
     ReturnValues: 'ALL_NEW'
   }).then(data => data.Attributes);
 }
@@ -113,6 +162,10 @@ function updateById(id, { name }) {
  * @returns {Promise<undefined>} no return value
  */
 function removeById(id) {
+  if (!id) {
+    return Promise.reject(new Error('id is required'));
+  }
+
   return dbDelete({
     TableName: AUTHORS_TABLE,
     Key: {
