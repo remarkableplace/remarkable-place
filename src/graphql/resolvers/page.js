@@ -30,7 +30,7 @@ function getById(root, args) {
  * @throws {boom.unauthorized}
  */
 function create(root, args, context) {
-  const { authorId } = context.req.session;
+  const { authorId } = context.session;
 
   if (!authorId) {
     throw boom.unauthorized('Unknown author');

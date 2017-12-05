@@ -23,7 +23,7 @@ app.use(
   bodyParser.json(),
   graphqlExpress(req => ({
     schema,
-    context: { req },
+    context: { session: req.session },
     formatError: formatGraphQlError
   }))
 );
