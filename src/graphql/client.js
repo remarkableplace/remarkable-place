@@ -5,11 +5,28 @@ const schema = require('./schema');
 
 /**
  *
- * @param {String} query - GraphQL query
+ * @param {String} requestString - GraphQL query
+ * @param {String} [rootValue] - rootValue
+ * @param {String} [contextValue] - contextValue
+ * @param {String} [variableValues] - variableValues
+ * @param {String} [operationName] - operationName
  * @returns {Promise} result
  */
-function run(query) {
-  return graphql(schema, query).then(({ errors, data }) => {
+function run(
+  requestString,
+  rootValue,
+  contextValue,
+  variableValues,
+  operationName
+) {
+  return graphql(
+    schema,
+    requestString,
+    rootValue,
+    contextValue,
+    variableValues,
+    operationName
+  ).then(({ errors, data }) => {
     if (errors) {
       logger.error(errors);
       throw boom.serverUnavailable();
