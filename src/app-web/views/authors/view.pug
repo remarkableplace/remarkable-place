@@ -1,0 +1,32 @@
+html(lang="en")
+  include ../includes/head.pug
+  body
+    include ../includes/header.pug
+
+    main(role="main" class="container")
+      div(class="row")
+        div(class="col-sm-8 offset-2 blog-main")
+          div(class="card")
+            div(class="card-body")
+              div(class="row")
+                div(class="col-sm-4")
+                  img(class="rounded w-100" src=author.avatarUrl)
+                div(class="col-sm-8")
+                  div(class="card-title")
+                    h1= author.fullName
+                  div(class="card-text")
+                    p= author.bio
+                    if author.githubHandle
+                      p GitHub:
+                        |
+                        |
+                        a(href="https://github.com/" + author.githubHandle)= author.githubHandle
+          br
+
+          unless pages.length
+            p Empty
+          each page in pages
+            include ../includes/page.pug
+            br
+
+    include ../includes/footer.pug

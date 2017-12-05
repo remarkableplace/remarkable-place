@@ -9,14 +9,7 @@ html(lang="en")
           unless pages.length
             p Empty
           each page in pages
-            div(class="blog-post")
-              h2(class="blog-post-title")= page.title
-              p(class="text-muted")
-                small by #{page.author.fullName}
-                span(class="float-right")
-                  small #{page.createdAt}
-              div !{page.content}
-              a(href="/pages/" + page.id title="Read " + page.title) read
+            include ../includes/page.pug
             br
 
     include ../includes/footer.pug

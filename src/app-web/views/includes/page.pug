@@ -1,0 +1,5 @@
+div(class="blog-post")
+  h2(class="blog-post-title")= page.title
+  include ../includes/page-header.pug
+  div !{page.content}
+  a(href="/pages/" + page.id title="Read " + page.title) read

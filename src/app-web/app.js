@@ -9,6 +9,7 @@ app.set('view engine', 'pug');
 
 app.get('/', require('./routes/pages/get'));
 app.get('/pages/:id', require('./routes/pages/:id/get'));
+app.get('/authors/:id', require('./routes/authors/:id/get'));
 
 app.use(errorHandler);
 

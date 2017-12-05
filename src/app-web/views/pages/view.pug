@@ -7,10 +7,7 @@ html(lang="en")
       div(class="row")
         div(class="col-sm-8 offset-2 blog-main")
           h1(class="blog-post-title")= page.title
-          p(class="text-muted")
-            small by #{page.author.fullName}
-            span(class="float-right")
-              small #{page.createdAt}
+          include ../includes/page-header.pug
           div !{page.content}
 
     include ../includes/footer.pug

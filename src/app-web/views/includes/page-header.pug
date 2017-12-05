@@ -1,0 +1,12 @@
+p(class="text-muted")
+  small by
+    |
+    |
+    a(
+      class="text-muted"
+      href="/authors/" + page.author.id
+      title= page.author.fullName
+    )
+      u= page.author.fullName
+    span(class="float-right")
+      small #{page.createdAt}
