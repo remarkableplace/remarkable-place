@@ -1,4 +1,5 @@
 const boom = require('boom');
+const _ = require('lodash');
 const Author = require('../../models/author');
 const Page = require('../../models/page');
 const { authorize } = require('../../models/session');
@@ -32,7 +33,9 @@ const resolvers = {
   },
   Mutation: {
     updateAuthor: authorize((root, args) =>
-      getById(root, args).then(() => Author.updateById(args.id, args))
+      getById(root, args).then(() =>
+        Author.updateById(args.id, _.omit(args, 'id'))
+      )
     ),
     removeAuthor: authorize((root, args) =>
       getById(root, args).then(author =>

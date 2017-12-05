@@ -3,7 +3,10 @@ const gql = require('graphql-tag');
 const typeDefs = gql`
   type Author {
     id: ID!
-    name: String!
+    fullName: String
+    avatarUrl: String
+    bio: String
+    githubHandle: String
     pages: [Page]
   }
 
@@ -24,10 +27,15 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    updateAuthor(id: String!, name: String!): Author
+    updateAuthor(
+      id: String!
+      fullName: String
+      avatarUrl: String
+      bio: String
+    ): Author
     removeAuthor(id: String!): Author
     createPage(title: String!, content: String!): Page
-    updatePage(id: String!, title: String!, content: String!): Page
+    updatePage(id: String!, title: String, content: String): Page
     removePage(id: String!): Page
   }
 `;

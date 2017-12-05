@@ -1,4 +1,5 @@
 const boom = require('boom');
+const _ = require('lodash');
 const Author = require('../../models/author');
 const Page = require('../../models/page');
 const { authorize } = require('../../models/session');
@@ -55,7 +56,9 @@ const resolvers = {
   Mutation: {
     createPage: authorize(create),
     updatePage: authorize((root, args) =>
-      getById(root, args).then(() => Page.updateById(args.id, args))
+      getById(root, args).then(() =>
+        Page.updateById(args.id, _.omit(args, 'id'))
+      )
     ),
     removePage: authorize((root, args) =>
       getById(root, args).then(page =>

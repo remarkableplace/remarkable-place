@@ -11,7 +11,7 @@ const query = `
       createdAt
       author {
         id
-        name
+        fullName
       }
     }
   }
@@ -24,7 +24,7 @@ function get(req, res, next) {
         Object.assign({}, page, {
           createdAt: moment(page.createdAt).format('YYYY/MM/DD'),
           content: Markdown.render(page.content || ''),
-          author: page.author || { name: 'anonymus' }
+          author: page.author || { fullName: 'anonymus' }
         })
       );
 

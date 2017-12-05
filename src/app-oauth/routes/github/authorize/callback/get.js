@@ -22,24 +22,34 @@ function get(req, res, next) {
         .then(resp =>
           github.orgs
             .getForUser({ username: resp.data.login })
-            .then(orgResp => ({ user: resp.data, orgs: orgResp.data }))
+            .then(orgResp => ({ githubUser: resp.data, orgs: orgResp.data }))
         );
     })
     // Find or create author
-    .then(({ user, orgs }) => {
+    .then(({ githubUser, orgs }) => {
       if (!GitHub.isOrgMember(orgs)) {
-        throw boom.unauthorized(`${user.login} is not part of the org`);
+        throw boom.unauthorized(`${githubUser.login} is not part of the org`);
       }
 
-      return Author.getByGithubId(user.id).then(author => {
+      const githubUserId = githubUser.id.toString();
+
+      return Author.getByGithubId(githubUserId).then(author => {
         if (!author) {
           return Author.create({
-            githubId: user.id,
-            name: user.name
+            githubId: githubUserId,
+            githubHandle: githubUser.login || null,
+            fullName: githubUser.name || null,
+            avatarUrl: githubUser.avatar_url || null,
+            bio: githubUser.bio || null
           });
         }
 
-        return author;
+        return Author.updateById(author.id, {
+          githubHandle: githubUser.login || null,
+          fullName: githubUser.name || null,
+          avatarUrl: githubUser.avatar_url || null,
+          bio: githubUser.bio || null
+        });
       });
     })
     // Update session
