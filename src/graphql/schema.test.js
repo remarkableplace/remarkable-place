@@ -466,7 +466,7 @@ test.serial('remove author by id rejects with not found', async t => {
 
   const query = `
     mutation {
-      removeAuthor(id: "unknown", fullName: "Jane 2") {
+      removeAuthor(id: "unknown") {
         id
       }
     }
