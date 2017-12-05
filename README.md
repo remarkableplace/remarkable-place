@@ -30,11 +30,11 @@ sls deploy
 - **oauth**: GitHub OAuth 2 login, provides session
 - **web**: Server rendered website
 
-#### oauth
+#### oauth application
 
 http://remarkable.place/oauth/github?redirect_uri=/admin
 
-### Setup
+### Setup local environment
 
 **Requirements:**
 
