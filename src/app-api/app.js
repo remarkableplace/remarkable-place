@@ -14,7 +14,7 @@ app.use(session.init);
 
 // Local development
 if (IS_OFFLINE) {
-  app.use(cors());
+  app.use(cors({ origin: true, credentials: true }));
 }
 
 app.get('/api', (req, res, next) => {

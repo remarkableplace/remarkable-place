@@ -1,20 +1,10 @@
 version: '3'
 
 services:
-  test-admin:
+  test-api:
     build:
       context: ../
       dockerfile: .docker/Dockerfile
-    image: remarkable-place/app
-    command: node /app/src/app-admin
-    env_file:
-      - ./local.env
-    ports:
-      - "4000:3000"
-    restart: always
-    depends_on:
-      - init-dynamodb
-  test-api:
     image: remarkable-place/app
     command: node /app/src/app-api
     env_file:
@@ -23,7 +13,7 @@ services:
       - "4001:3000"
     restart: always
     depends_on:
-      - test-admin
+      - init-dynamodb
   test-oauth:
     image: remarkable-place/app
     command: node /app/src/app-oauth
@@ -33,7 +23,7 @@ services:
       - "4002:3000"
     restart: always
     depends_on:
-      - test-admin
+      - test-api
   test-web:
     image: remarkable-place/app
     command: node /app/src/app-web
@@ -43,4 +33,4 @@ services:
       - "4003:3000"
     restart: always
     depends_on:
-      - test-admin
+      - test-api

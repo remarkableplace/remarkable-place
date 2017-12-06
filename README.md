@@ -31,7 +31,7 @@ sls deploy
 
 #### oauth application
 
-http://remarkable.place/oauth/github?redirect_uri=/admin
+http://remarkable.place/oauth/github?redirect_uri=/api
 
 ### Setup local environment
 
