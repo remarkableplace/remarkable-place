@@ -8,7 +8,6 @@ package:
     - .docker/**
     - .dynamodb_data/**
     - .nyc_output/**
-    - node_modules/**
 
 custom:
   authorsTableName: ${self:service}-authors-${opt:stage, self:provider.stage}
