@@ -25,7 +25,6 @@ sls deploy
 
 ### Applications
 
-- **admin:** React SPA, uses API
 - **api**: GraphQL API
 - **oauth**: GitHub OAuth 2 login, provides session
 - **web**: Server rendered website
@@ -47,7 +46,6 @@ Starts containers with `nodemon`.
 npm run dev
 ```
 
-- **admin:** http://localhost:4000
 - **api**: http://localhost:4001
 - **oauth**: http://localhost:4002
 - **web**: http://localhost:4003

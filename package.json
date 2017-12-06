@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "description": "https://remarkable.place",
-  "main": "index.js",
+  "main": "src/server/app-web/index.js",
   "scripts": {
     "cover": "nyc --reporter=html --reporter=text --report-dir=.coverage npm run test",
     "dev": "docker-compose -f .docker/compose-db.yaml -f .docker/compose-app-dev.yaml up",
@@ -30,6 +30,7 @@
     "body-parser": "1.18.2",
     "boom": "7.1.1",
     "connect-dynamodb": "2.0.0",
+    "cors": "2.8.4",
     "es6-promisify": "5.0.0",
     "express": "4.16.2",
     "express-session": "1.15.6",

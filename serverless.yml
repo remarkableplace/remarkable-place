@@ -1,5 +1,15 @@
 service: remarkable-place
 
+package:
+  exclude:
+    - .git/**
+    - .circleci/**
+    - .coverage/**
+    - .docker/**
+    - .dynamodb_data/**
+    - .nyc_output/**
+    - node_modules/**
+
 custom:
   authorsTableName: ${self:service}-authors-${opt:stage, self:provider.stage}
   pagesTableName: ${self:service}-pages-${opt:stage, self:provider.stage}
@@ -38,11 +48,6 @@ provider:
     GITHUB_OAUTH_REDIRECT_URI: ${ssm:/${self:service}-github-oauth-callback-${opt:stage, self:provider.stage}~true}
 
 functions:
-  admin:
-    handler: src/app-admin/index.handler
-    events:
-      - http: ANY /admin
-      - http: 'ANY /admin/{proxy+}'
   api:
     handler: src/app-api/index.handler
     events:
